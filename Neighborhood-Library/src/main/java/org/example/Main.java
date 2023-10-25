@@ -2,6 +2,16 @@ package org.example;
 
 import java.util.Scanner;
 
+/*
+It's hard to check a book back in based on its id number when the id number is never shown :P
+The check in doesn't seem to work. I tried checking in a book after looking up the id in the array.
+So when checking a book in, you have to make certain it is already checked out
+if it is checked out, then you switch it to being checked in.
+Other than that I like your menus! You do need to be more blatant about what you expect the user to input though
+Sometimes I was confused
+You did use the while loop and switch cases correctly, but go over your logic. It looks like you did check out logic
+for both check in and check out
+ */
 public class Main {
     public static void main(String[] args) {
 
@@ -56,6 +66,7 @@ public class Main {
                     }
 
                     System.out.println("Would you like to check out a book?");
+                    //It'd be nice to know if you want the user to type in yes, or y or what
                     String yesorno = scanner.next();
                     if (yesorno.equalsIgnoreCase("yes")) {
                         System.out.println("What is your name?");
@@ -88,6 +99,7 @@ public class Main {
 
                     if (userInputCorX.equalsIgnoreCase("C")) {
                         System.out.println("Let's Check in a Book");
+                        //Why do we need an id number, and what id number?
                         System.out.println("What is your ID Number?");
                         int newID = scanner.nextInt();
                         scanner.nextLine();
@@ -101,6 +113,7 @@ public class Main {
 
                         for (int i = 0; i < bookCount; i++) {
                             if (books[i].getTitle().equalsIgnoreCase(userInputTitle)) {
+                                //this looks like the logic for checking out a book, not checking in
                                 if (books[i].isCheckedOut) {
                                     System.out.println("This book is already checked out by someone");
                                 } else {
@@ -138,7 +151,7 @@ public class Main {
 
                     boolean found = false;
 
-
+                    //this looks like the exact same code from above?
                     for (int i = 0; i < bookCount; i++) {
                         if (books[i].getTitle().equalsIgnoreCase(userInputTitle)) {
                             if (books[i].isCheckedOut) {
