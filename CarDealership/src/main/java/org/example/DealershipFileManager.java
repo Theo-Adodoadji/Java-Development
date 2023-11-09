@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class DealershipFileManager {
+    //Nice use of static and a private constructor!
     private DealershipFileManager() {
 
     }
@@ -45,7 +46,7 @@ public class DealershipFileManager {
                     String[] dataRow = input.split("\\|");
                     Vehicle vehicle = new Vehicle(Integer.parseInt(dataRow[0]), Integer.parseInt(dataRow[1]), dataRow[2],
                             dataRow[3], dataRow[5], dataRow[4], Integer.parseInt(dataRow[6]), Double.parseDouble(dataRow[7]));
-
+                    //Why did you comment this out? How is the dealership going to get its vehicles?
                     //dealership.addVehicle(vehicle);
 
                 }

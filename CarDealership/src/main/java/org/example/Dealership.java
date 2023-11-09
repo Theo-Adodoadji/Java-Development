@@ -3,6 +3,8 @@ package org.example;
 import java.util.ArrayList;
 import java.util.List;
 
+//This class is going to need a LOT more work. Why didn't you stub out the methods
+//as they were laid out in the UML diagram? You didn't have to fill in all the logic.
 public class Dealership {
 
     private String name;
