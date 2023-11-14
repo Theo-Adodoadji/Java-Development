@@ -29,8 +29,6 @@ public class DealershipFileManager {
 
         Dealership dealership = new Dealership("GMC", "123 Whenever St", "935-444-5555");
 
-        boolean continueRunning = true;
-        while (continueRunning) {
 
             try {
                 FileInputStream fs = new FileInputStream("src/main/resources/inventory.csv");
@@ -46,16 +44,17 @@ public class DealershipFileManager {
                     String[] dataRow = input.split("\\|");
                     Vehicle vehicle = new Vehicle(Integer.parseInt(dataRow[0]), Integer.parseInt(dataRow[1]), dataRow[2],
                             dataRow[3], dataRow[5], dataRow[4], Integer.parseInt(dataRow[6]), Double.parseDouble(dataRow[7]));
+
                     dealership.addVehicle(vehicle);
 
                 }
-                continueRunning = false;
+                scanner.close();
+
 
             } catch (FileNotFoundException ex) {
                 System.out.println("Couldn't find the file to read from sorry.");
-                continueRunning = false;
             }
-        }
+
 
 
         return dealership;
@@ -63,7 +62,7 @@ public class DealershipFileManager {
 
 public static void saveDealership(Dealership dealership){
     try{
-        FileWriter fw = new FileWriter("src/main/resources/vehicles.csv");
+        FileWriter fw = new FileWriter("src/main/resources/inventory.csv", true);
 
         //Write the header
         String headerRow = String.format("%s|%s|%s %n", dealership.getName(), dealership.getAddress(), dealership.getPhone());

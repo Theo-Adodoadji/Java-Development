@@ -311,7 +311,11 @@ public class UserInterface {
         Scanner scanner = new Scanner(System.in);
         while(true) {
             try {
-                System.out.println("Chose an option:\n1> Purchase\n2> Finance\n3> Lease\n0> Return to the main menu");
+                System.out.println("Chose an option:");
+                System.out.println("Would you like to purchase a vehicle?");
+                System.out.println("Would you like to finance a vehicle?");
+                System.out.println("Would you like to lease a vehicle?");
+                System.out.println("Would you like to return to the main menu?");
                 int userInput = scanner.nextInt();
                 switch (userInput) {
                     case 1:
