@@ -43,7 +43,7 @@ public class DealershipFileManager {
                     input = scanner.nextLine();
                     String[] dataRow = input.split("\\|");
                     Vehicle vehicle = new Vehicle(Integer.parseInt(dataRow[0]), Integer.parseInt(dataRow[1]), dataRow[2],
-                            dataRow[3], dataRow[5], dataRow[4], Integer.parseInt(dataRow[6]), Double.parseDouble(dataRow[7]));
+                            dataRow[3], dataRow[4], dataRow[5], Integer.parseInt(dataRow[6]), Double.parseDouble(dataRow[7]));
 
                     dealership.addVehicle(vehicle);
 
@@ -65,12 +65,15 @@ public static void saveDealership(Dealership dealership){
         FileWriter fw = new FileWriter("src/main/resources/inventory.csv", true);
 
         //Write the header
-        String headerRow = String.format("%s|%s|%s %n", dealership.getName(), dealership.getAddress(), dealership.getPhone());
-        fw.write(headerRow);
+       // String headerRow = String.format("%s|%s|%s %n", dealership.getName(), dealership.getAddress(), dealership.getPhone());
+        // fw.write(headerRow);
 
         for(Vehicle vehicle : dealership.getAllVehicles()){
+
             String row = String.format("%d|%d|%s|%s|%s|%s|%d|%f %n", vehicle.getVin(), vehicle.getYear(), vehicle.getMake(), vehicle.getModel(),
-                    vehicle.getColor(), vehicle.getVehicleType(), vehicle.getOdometer(), vehicle.getPrice());
+                     vehicle.getVehicleType(), vehicle.getColor(), vehicle.getOdometer(), vehicle.getPrice());
+
+            // Needs to be formatted this way: Vin|Year|Make|Model|Type|Color|Odometer|Price
 
             fw.write(row);
         }

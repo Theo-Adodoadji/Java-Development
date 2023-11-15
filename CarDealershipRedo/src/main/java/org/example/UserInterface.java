@@ -101,7 +101,7 @@ public class UserInterface {
                 double maxPrice = tanner.nextDouble();
 
                 if (minPrice < maxPrice) {
-                    System.out.printf("Here are all the vehicles between %d and %d", minPrice, maxPrice);
+                    System.out.printf("Here are all the vehicles between %.2f and %.2f%n", minPrice, maxPrice);
                     List<Vehicle> vehicleList = dealership.getVehiclesByPrice(minPrice, maxPrice);
                     displayVehicles(vehicleList);
                     isGettingByPrice = false;
@@ -115,25 +115,7 @@ public class UserInterface {
     }
 
 
-    public void processGetByMakeModelRequest() {
-        boolean isGettingByMakeModel = true;
 
-        while (isGettingByMakeModel) {
-            try {
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("What is the make of the vehicle you are looking for?");
-                String make = scanner.nextLine();
-                System.out.println("What is the the model of the vehicle you are looking for?");
-                String model = scanner.nextLine();
-
-                List<Vehicle> vehicleList = dealership.getVehiclesByMakeModel(make, model);
-                displayVehicles(vehicleList);
-                isGettingByMakeModel = false;
-            } catch (InputMismatchException ex) {
-                System.out.println("Invalid input.");
-            }
-        }
-    }
 
 
     public void processGetByYearRequest() {
@@ -152,10 +134,31 @@ public class UserInterface {
                     displayVehicles(vehicleList);
                     isGettingByYear = false;
                 } else {
-                    System.out.println("Wrong! Try again");
+                    System.out.println("Not a valid year! Try again");
                 }
             } catch (InputMismatchException ex) {
-                System.out.println("Wrong! Try again");
+                System.out.println("Not a valid year! Try again");
+            }
+        }
+    }
+
+    public void processGetByMakeModelRequest() {
+        boolean isGettingByMakeModel = true;
+
+        while (isGettingByMakeModel) {
+            try {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("What is the make of the vehicle you are looking for?");
+                String make = scanner.nextLine();
+                System.out.println("What is the the model of the vehicle you are looking for?");
+                String model = scanner.nextLine();
+                System.out.println("Searching for make: " + make + ", model: " + model);
+
+                List<Vehicle> vehicleList = dealership.getVehiclesByMakeModel(make, model);
+                displayVehicles(vehicleList);
+                isGettingByMakeModel = false;
+            } catch (InputMismatchException ex) {
+                System.out.println("Invalid input.");
             }
         }
     }
@@ -168,6 +171,8 @@ public class UserInterface {
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("What is the color of the vehicle you are looking for?");
                 String color = scanner.nextLine();
+                System.out.println("Searching for color: "  + color);
+
 
                 List<Vehicle> vehicleList = dealership.getVehiclesByColor(color);
                 displayVehicles(vehicleList);
@@ -210,6 +215,8 @@ public class UserInterface {
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("What is the vehicle type you are looking for?");
                 String vehicleType = scanner.nextLine();
+                System.out.println("Searching for Vehicle Type: "  + vehicleType);
+
 
                 List<Vehicle> vehicleList = dealership.getVehiclesByType(vehicleType);
                 displayVehicles(vehicleList);
@@ -244,11 +251,11 @@ public class UserInterface {
                 System.out.println("What is the model?");
                 String model = scanner.nextLine();
 
-                System.out.println("What is the color?");
-                String color = scanner.nextLine();
-
                 System.out.println("What is the vehicle type?");
                 String vehicleType = scanner.nextLine();
+
+                System.out.println("What is the color?");
+                String color = scanner.nextLine();
 
                 System.out.println("What is the odometer reading?");
                 int odometer = scanner.nextInt();
@@ -257,7 +264,8 @@ public class UserInterface {
                 System.out.println("What is the price of the vehicle?");
                 double price = scanner.nextDouble();
 
-                Vehicle newVehicle = new Vehicle(vin, year, make, model, color, vehicleType, odometer, price);
+                Vehicle newVehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
+             // Needs to be formatted this way: Vin|Year|Make|Model|Type|Color|Odometer|Price
 
                 dealership.addVehicle(newVehicle);
 
@@ -312,10 +320,10 @@ public class UserInterface {
         while(true) {
             try {
                 System.out.println("Chose an option:");
-                System.out.println("Would you like to purchase a vehicle?");
-                System.out.println("Would you like to finance a vehicle?");
-                System.out.println("Would you like to lease a vehicle?");
-                System.out.println("Would you like to return to the main menu?");
+                System.out.println("1) Would you like to purchase a vehicle?");
+                System.out.println("2) Would you like to finance a vehicle?");
+                System.out.println("3) Would you like to lease a vehicle?");
+                System.out.println("4) Would you like to return to the main menu?");
                 int userInput = scanner.nextInt();
                 switch (userInput) {
                     case 1:
