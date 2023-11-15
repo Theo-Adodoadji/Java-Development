@@ -313,6 +313,16 @@ public class UserInterface {
         }
     }
 
+
+    /*     1. Make an option to buy or lease a car (Ask if they need financing)
+     2. Get personal information of the buyer (name/email)
+     3. Ask them which car do they want? (VIN number to identify the car)
+            4. Create the appropriate contract (SalesContract or LeaseContract) and fill in the information.
+            5. Let the user know the total cost and monthly payment.
+            6. If user agrees to the contract, remove the car from the lot, and return to the home menu.
+            7. IF the user agreed, write the contract to a file
+    */
+
     public void processSaleorLeaseVehicle() {
         System.out.println("Here is the list of our vehicles ");
         displayVehicles(this.dealership.getAllVehicles());
@@ -365,7 +375,7 @@ public class UserInterface {
 
             Vehicle foundVehicle = null;
 
-                while (true) {
+                while(true) {
                     try {
                         if (foundVehicle != null) {
                             System.out.println(foundVehicle + "\nFinal confirmation do you still wanna purchase it:\n1> yes\n2> no");
@@ -522,14 +532,6 @@ public class UserInterface {
 
 
 
-    /*     1. Make an option to buy or lease a car (Ask if they need financing)
-     2. Get personal information of the buyer (name/email)
-     3. Ask them which car do they want? (VIN number to identify the car)
-            4. Create the appropriate contract (SalesContract or LeaseContract) and fill in the information.
-            5. Let the user know the total cost and monthly payment.
-            6. If user agrees to the contract, remove the car from the lot, and return to the home menu.
-            7. IF the user agreed, write the contract to a file
-    */
 
 
 

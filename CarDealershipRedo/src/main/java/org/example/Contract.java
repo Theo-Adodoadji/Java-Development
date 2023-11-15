@@ -1,7 +1,7 @@
 package org.example;
 
 import java.time.LocalDate;
-
+//Getters and setters for Contract properties
 public abstract class Contract {
     private LocalDate dateOfContract;
 

@@ -70,7 +70,7 @@ public static void saveDealership(Dealership dealership){
 
         for(Vehicle vehicle : dealership.getAllVehicles()){
 
-            String row = String.format("%d|%d|%s|%s|%s|%s|%d|%f %n", vehicle.getVin(), vehicle.getYear(), vehicle.getMake(), vehicle.getModel(),
+            String row = String.format("%d|%d|%s|%s|%s|%s|%d|%f \n", vehicle.getVin(), vehicle.getYear(), vehicle.getMake(), vehicle.getModel(),
                      vehicle.getVehicleType(), vehicle.getColor(), vehicle.getOdometer(), vehicle.getPrice());
 
             // Needs to be formatted this way: Vin|Year|Make|Model|Type|Color|Odometer|Price
