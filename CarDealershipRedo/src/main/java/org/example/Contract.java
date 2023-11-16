@@ -2,6 +2,7 @@ package org.example;
 
 import java.time.LocalDate;
 //Getters and setters for Contract properties
+//needs a Localdatetime, customerName, customeremail, and vehicle sold
 public abstract class Contract {
     private LocalDate dateOfContract;
 
@@ -11,17 +12,13 @@ public abstract class Contract {
 
     private Vehicle vehicleSold;
 
-    private double totalPrice;
-
-    private double monthlyPayment;
 
 
-
-    public Contract(LocalDate dateOfContract, String customerName, String customerEmail, Vehicle vehicleSoldVin) {
+    public Contract(LocalDate dateOfContract, String customerName, String customerEmail, Vehicle vehicleSold) {
         this.dateOfContract = dateOfContract;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
-        this.vehicleSold = vehicleSold;
+        this.vehicleSold = vehicleSold; // Correctly assigns the parameter to the instance variable
     }
 
 
@@ -61,7 +58,7 @@ public abstract class Contract {
     public abstract double getTotalPrice();
 
     public abstract double getMonthlyPayment();
-
+//abstract values for getTotalPrice() and get monthly payment
 
 }
 

@@ -30,55 +30,56 @@ public class DealershipFileManager {
         Dealership dealership = new Dealership("GMC", "123 Whenever St", "935-444-5555");
 
 
-            try {
-                FileInputStream fs = new FileInputStream("src/main/resources/inventory.csv");
+        try {
+            FileInputStream fs = new FileInputStream("src/main/resources/inventory.csv");
 
-                Scanner scanner = new Scanner(fs);
-
-                //skip first Line
-                scanner.nextLine();
-
-                String input;
-                while (scanner.hasNextLine()) {
-                    input = scanner.nextLine();
-                    String[] dataRow = input.split("\\|");
-                    Vehicle vehicle = new Vehicle(Integer.parseInt(dataRow[0]), Integer.parseInt(dataRow[1]), dataRow[2],
-                            dataRow[3], dataRow[4], dataRow[5], Integer.parseInt(dataRow[6]), Double.parseDouble(dataRow[7]));
-
-                    dealership.addVehicle(vehicle);
-
-                }
-                scanner.close();
+            Scanner scanner = new Scanner(fs);
 
 
-            } catch (FileNotFoundException ex) {
-                System.out.println("Couldn't find the file to read from sorry.");
+            String input;
+            while (scanner.hasNextLine()) {
+                input = scanner.nextLine();
+                String[] dataRow = input.split("\\|");
+                Vehicle vehicle = new Vehicle(Integer.parseInt(dataRow[0]), Integer.parseInt(dataRow[1]), dataRow[2],
+                        dataRow[3], dataRow[4], dataRow[5], Integer.parseInt(dataRow[6]), Double.parseDouble(dataRow[7]));
+
+                dealership.addVehicle(vehicle);
+
             }
+            scanner.close();
 
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("Couldn't find the file to read from sorry.");
+        }
 
 
         return dealership;
     }
 
-public static void saveDealership(Dealership dealership){
+
+    //saveDealership overwrites inventory.csv file
+ public static void saveDealership(Dealership dealership){
     try{
-        FileWriter fw = new FileWriter("src/main/resources/inventory.csv", true);
+        FileWriter fw = new FileWriter("src/main/resources/inventory.csv", false);
 
         //Write the header
        // String headerRow = String.format("%s|%s|%s %n", dealership.getName(), dealership.getAddress(), dealership.getPhone());
         // fw.write(headerRow);
 
-        for(Vehicle vehicle : dealership.getAllVehicles()){
+        for(Vehicle vehicle : dealership.getAllVehicles()) {
 
-            String row = String.format("%d|%d|%s|%s|%s|%s|%d|%f \n", vehicle.getVin(), vehicle.getYear(), vehicle.getMake(), vehicle.getModel(),
-                     vehicle.getVehicleType(), vehicle.getColor(), vehicle.getOdometer(), vehicle.getPrice());
+            String row = String.format("%d|%d|%s|%s|%s|%s|%d|%.2f \n", vehicle.getVin(), vehicle.getYear(), vehicle.getMake(), vehicle.getModel(),
+                    vehicle.getVehicleType(), vehicle.getColor(), vehicle.getOdometer(), vehicle.getPrice());
 
             // Needs to be formatted this way: Vin|Year|Make|Model|Type|Color|Odometer|Price
 
             fw.write(row);
         }
 
-        fw.close();
+
+            fw.close();
+
     }
     catch (IOException ex){
         System.out.println("Had a problem writing to the file cuz of: " + ex);

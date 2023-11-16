@@ -115,9 +115,6 @@ public class UserInterface {
     }
 
 
-
-
-
     public void processGetByYearRequest() {
         boolean isGettingByYear = true;
 
@@ -268,12 +265,19 @@ public class UserInterface {
              // Needs to be formatted this way: Vin|Year|Make|Model|Type|Color|Odometer|Price
 
                 dealership.addVehicle(newVehicle);
+                DealershipFileManager.saveDealership(dealership);
+
 
                 System.out.println("Vehicle added successfully!");
                 isAddingVehicle = false;
             } catch (InputMismatchException ex) {
                 System.out.println("Invalid input. Please check your input format and try again.");
+
             }
+            displayVehicles(this.dealership.getAllVehicles());
+
+
+
         }
     }
 
@@ -301,6 +305,9 @@ public class UserInterface {
                 if (vehicleToRemove != null) {
                     // Remove the vehicle from the inventory
                     dealership.removeVehicle(vehicleToRemove);
+               //Make sure to call this method to rewrite file DealershipFileManager.saveDealership(dealership);
+                    DealershipFileManager.saveDealership(dealership);
+
                     System.out.println("Vehicle removed successfully!");
                 } else {
                     System.out.println("Vehicle with VIN " + vinToRemove + " not found in inventory.");
@@ -310,10 +317,11 @@ public class UserInterface {
             } catch (InputMismatchException ex) {
                 System.out.println("Invalid input. VIN must be a number.");
             }
+            displayVehicles(this.dealership.getAllVehicles());
         }
     }
 
-
+//ContractDataManager.saveContract(contract);
     /*     1. Make an option to buy or lease a car (Ask if they need financing)
      2. Get personal information of the buyer (name/email)
      3. Ask them which car do they want? (VIN number to identify the car)
@@ -345,7 +353,7 @@ public class UserInterface {
                     case 3:
                         getLease();
                         break;
-                    case 0:
+                    case 4:
                         System.out.println("You are returning to the main menu");
                         return;
                     default:
@@ -361,12 +369,13 @@ public class UserInterface {
 
 
     }
+
+
     private void getPurchase() {
         Scanner scanner = new Scanner(System.in);
 
         try {
             System.out.println("Enter customer name please");
-            scanner.nextLine();
             String name = scanner.nextLine().trim();
             System.out.println("Enter customer email address ");
             String email = scanner.nextLine().trim();
@@ -375,52 +384,55 @@ public class UserInterface {
 
             Vehicle foundVehicle = null;
 
-                while(true) {
+            for (Vehicle vehicle : dealership.getAllVehicles()) {
+                if (vehicle.getVin() == vinNumber) {
+                    foundVehicle = vehicle;
+                    break;
+                }
+            }
+
+            if (foundVehicle != null) {
+                while (true) {
                     try {
-                        if (foundVehicle != null) {
-                            System.out.println(foundVehicle + "\nFinal confirmation do you still wanna purchase it:\n1> yes\n2> no");
-                            int userInput = scanner.nextInt();
+                        System.out.println(foundVehicle + "\nFinal confirmation do you still wanna purchase it:\n1) yes\n2) no");
+                        System.out.println("Please select number for corresponding answer");
+                        int userInput = scanner.nextInt();
 
-                            switch (userInput) {
-
-                                case 1:
-                                    SalesContract sc = new SalesContract(LocalDate.now(), name, email, foundVehicle, false);
-                                    System.out.println("Your monthly payment will be:\n" + foundVehicle + "\nMonthly Payment: " + sc.getTotalPrice() + "$");
-                                    ContractDataManager.saveContract(sc);
-                                    dealership.removeVehicle(foundVehicle);
-
-                                    return;
-                                case 2:
-                                    System.out.println("Your are returning to the purchase/lease/finance menu");
-                                    return;
-                                default:
-                                    System.out.println("chose the correct option");
-                                    break;
-                            }
-                        } else {
-                            System.out.println("We do not have the vehicle with that VIN number.");
-                            return;
+                        switch (userInput) {
+                            case 1:
+                                SalesContract sc = new SalesContract(LocalDate.now(), name, email, foundVehicle, false);
+                                System.out.println("Your total payment for: " + foundVehicle + "\nMonthly Payment: " + String.format("%.2f", sc.getMonthlyPayment()) + "$");
+                                // String row = String.format("%d|%d|%s|%s|%s|%s|%d|%.2f \n", vehicle.getVin(), vehicle.getYear(), vehicle.getMake(), vehicle.getModel(),
+                                // vehicle.getVehicleType(), vehicle.getColor(), vehicle.getOdometer(), vehicle.getPrice());
+                                ContractDataManager.saveContract(sc);
+                                dealership.removeVehicle(foundVehicle);
+                                return;
+                            case 2:
+                                System.out.println("Your are returning to the purchase/lease/finance menu");
+                                return;
+                            default:
+                                System.out.println("Choose the correct option");
+                                break;
                         }
                     } catch (InputMismatchException exception) {
-                        System.out.println("invalid input");
+                        System.out.println("Invalid input");
                         scanner.nextLine();
                     }
                 }
-
-
-
+            } else {
+                System.out.println("We do not have the vehicle with that VIN number.");
+            }
         } catch (InputMismatchException exception) {
             System.out.println("Enter a valid Input");
-
         }
     }
+
     private void getFinance(){
         Scanner scanner = new Scanner(System.in);
 
         while(true) {
             try {
                 System.out.println("Enter customer name please");
-                scanner.nextLine();
                 String name = scanner.nextLine().trim();
                 System.out.println("Enter customer email address ");
                 String email = scanner.nextLine().trim();
@@ -429,23 +441,25 @@ public class UserInterface {
 
                 Vehicle foundVehicle = null;
 
-                for (Vehicle v : dealership.inventory) {
-                    if (vinNumber == v.getVin()) {
-                        foundVehicle = v;
+                for (Vehicle vehicle : dealership.getAllVehicles()) {
+                    if (vehicle.getVin() == vinNumber) {
+                        foundVehicle = vehicle;
                         break;
                     }
                 }
+
                 while (true) {
                     try {
                         if (foundVehicle != null) {
-                            System.out.println(foundVehicle + "\nFinal confirmation do you still wanna Finance it:\n1> yes\n2> no");
+                            System.out.println(foundVehicle + "\nFinal confirmation do you still wanna Finance it:\n1) yes\n2) no");
+                            System.out.println("Please select number for corresponding answer");
                             int userInput = scanner.nextInt();
                             switch (userInput) {
 
                                 case 1:
                                     LeaseContract lc = new LeaseContract(LocalDate.now(), name, email, foundVehicle);
 
-                                    System.out.println("Your monthly payment for: " + foundVehicle + "\nMonthly Payment: " + lc.getMonthlyPayment() + "$");
+                                    System.out.println("Your total payment for: " + foundVehicle + "\nMonthly Payment: " + String.format("%.2f", lc.getMonthlyPayment()) + "$");
                                     return;
                                 case 2:
                                     System.out.println("Your are returning to the purchase/lease/finance menu");
@@ -476,7 +490,6 @@ public class UserInterface {
         while (true) {
             try {
                 System.out.println("Enter Customer name please");
-                scanner.nextLine();
                 String name = scanner.nextLine().trim();
                 System.out.println("Enter Customer email address ");
                 String email = scanner.nextLine().trim();
@@ -485,23 +498,24 @@ public class UserInterface {
 
                 Vehicle foundVehicle = null;
 
-                for (Vehicle v : dealership.inventory) {
-                    if (vinNumber == v.getVin()) {
-                        foundVehicle = v;
+                for (Vehicle vehicle : dealership.getAllVehicles()) {
+                    if (vehicle.getVin() == vinNumber) {
+                        foundVehicle = vehicle;
                         break;
                     }
                 }
                 while (true) {
                     try {
                         if (foundVehicle != null) {
-                            System.out.println(foundVehicle + "\nFinal confirmation do you still wanna lease it:\n1> yes\n2> no");
+                            System.out.println(foundVehicle + "\nFinal confirmation do you still wanna lease it:\n1) yes\n2) no");
+                            System.out.println("Please select number for corresponding answer");
                             int userInput = scanner.nextInt();
                             switch (userInput) {
 
                                 case 1:
 
                                     LeaseContract lc = new LeaseContract(LocalDate.now(), name, email, foundVehicle);
-                                    System.out.println("Your monthly payment will be:\n" + foundVehicle + "\nMonthly Payment: " + lc.getMonthlyPayment() + "$");
+                                    System.out.println("Your total payment for: " + foundVehicle + "\nMonthly Payment: " + String.format("%.2f", lc.getMonthlyPayment()) + "$");
                                     ContractDataManager.saveContract(lc);
                                     dealership.removeVehicle(foundVehicle);
                                     return;
