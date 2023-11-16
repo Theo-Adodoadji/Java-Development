@@ -5,6 +5,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+
+//You might need to redo this. There's no reason to use the FileInputStream here at all.
+//The responsibility of the UserInterface is to display data. Not to filter it or fetch it.
 public class UserInterface {
 
     public void display() {
